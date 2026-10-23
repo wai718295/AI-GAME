@@ -495,8 +495,8 @@
               <div class="text-xs text-zinc-400 mb-2">基於當前：${t.date}，觀塘凱滙2座46樓A室私宅內。</div>
               ${gameState.choices.map(c => `
                 <button onclick="selectChoice('${c.id}')" class="choice-btn">
-                  <div class="font-medium text-amber-200">\${c.title}</div>
-                  <div class="text-xs text-zinc-400 mt-1">\${c.impact}</div>
+                  <div class="font-medium text-amber-200">${c.title}</div>
+                  <div class="text-xs text-zinc-400 mt-1">${c.impact}</div>
                 </button>
               `).join('')}
             </div>
@@ -626,11 +626,11 @@
     }
 
     function foldAllPanels(fold) {
-      document.querySelectorAll('[id\$="-body"]').forEach(el => {
+      document.querySelectorAll('[id$="-body"]').forEach(el => {
         if (fold) el.classList.add('hidden');
         else el.classList.remove('hidden');
       });
-      document.querySelectorAll('[id\$="-arrow"]').forEach(el => {
+      document.querySelectorAll('[id$="-arrow"]').forEach(el => {
         el.innerText = fold ? '▸' : '▾';
       });
     }
@@ -728,4 +728,187 @@
         gameState.npcs.qing.favor = Math.min(100, gameState.npcs.qing.favor + 2);
         gameState.npcs.lin.favor = Math.min(100, gameState.npcs.lin.favor + 2);
         gameState.npcs.qing.pos = "46樓A室客廳L型梳化（盤膝貼坐喺你左邊）";
-        gameState.npcs.lin.pos = "46樓A室客廳
+        gameState.npcs.lin.pos = "46樓A室客廳L型梳化（將雙長腿自然搭喺你大髀上面）";
+
+        gameState.storyParagraphs = [
+          `「沖涼邊有得同你哋兩個開餐咁緊要呀？陣間食飽飲完酒先慢慢沖都未遲啦！」`,
+          `你笑住放低手上面個 Donki 袋，順手伸出大掌喺阿晴柔軟順滑嘅頭頂上面寵溺咁揉咗兩下。阿晴好似隻慣晒俾人摸頭嘅貓仔咁，唔單止冇避開，反而順勢用臉頰蹭咗蹭你手掌心，笑到對眼彎成月牙形：「算你識做啦！今日買咗兩盒 A4 和牛咁闊佬，本小姐就勉為其難原諒你九點半先返到屋企！」`,
+          `你同阿晴兩個人極有默契咁行去開放式廚房中島，三兩下手勢就將兩盒油花滿滿嘅和牛片、洗乾淨嘅日本士多啤梨同埋兩罐冰凍白桃梳打酒擺好喺托盤度。趁住電磁爐煲緊湯底嗰幾分鐘空檔，你端住盤士多啤梨同白桃酒，直接行過去客廳張深灰色 L 型大梳化度。`,
+          `阿琳本來正慵懶咁斜倚喺梳化轉角位，一雙修長筆直、線條完美嘅白皙長腿橫放喺坐墊上面。見到你行埋嚟，佢連姿勢都懶得換，只係微微抬起修長嘅小腿，等你一屁股坐落去之後，就極之自然咁將一雙柔軟微涼嘅小腿重新搭返上你結實嘅大髀上面，腳趾仲好似玩咁輕輕蹭咗蹭你牛仔褲布料。`,
+          `阿晴亦即刻赤住腳跳上梳化，盤膝坐喺你左手邊，成個人好自然咁挨住你左邊手臂，伸手「啪」一聲拉開罐白桃梳打酒，自己飲咗一啖先，再直接將罐口遞到你嘴邊：「喂，阿Wai你試下，今期 Donki 入呢隻白桃味好濃呀！」`,
+          `你就住阿晴隻手飲咗一啖，冰涼微甜嘅氣泡混和住蜜桃香氣順住喉嚨落肚，身邊兩邊傳嚟阿晴身上嘅清爽果香同埋阿琳身上陣淡淡嘅白茶木質沐浴露味。三個由細玩到大嘅死黨就咁毫無間隙咁貼坐喺梳化度，落地大玻璃窗外係觀塘萬家燈火嘅繁華夜景。`,
+          `你伸手自然咁搭喺阿琳纖細柔韌嘅小腿肚上面，幫佢輕輕按捏放鬆，一邊轉過頭望住佢哋兩個笑住反問：「好喇，你兩個由我一入屋就神神秘秘咁笑，頭先我未返嚟嗰陣，你哋兩個喺度傾緊咩私密話題呀？係咪又喺度講邊個男仔追你哋，定係喺度八卦我？」`,
+          `「邊個得閒講出面啲狂蜂浪蝶呀，悶都悶死。」阿琳感受住你手掌心傳嚟嘅溫熱力道，舒服到微微眯起雙眼，平時喺鏡頭前面高冷到震嘅女神氣場完全融化晒，語氣懶洋洋又帶點坦率，「頭先阿晴拎咗你擺喺茶几度嗰份《午夜便利店》劇本出嚟睇咋嘛。入面第 14 集寫你同個女主角喺便利店後巷有一場感情爆發嘅對手戲，阿晴喺度同我拗緊，話你平時對住我哋兩個就口花花姐，去到鏡頭前面拍親密戲肯定會耳仔紅。」`,
+          `「喂！我邊有講錯啫！」阿晴即刻唔服氣咁挺起胸口，寬鬆嘅深灰色 T 恤隨住佢嘅動作勾勒出 B 罩杯緊緻勻稱嘅曲線。佢成個人幾乎半趴過嚟你胸口度，仰起塊白裏透紅嘅臉蛋，一雙大眼睛距離你唔夠十厘米，毫無羞澀咁直視住你：「阿Wai，你老實講！你同我、阿琳自細到大抱埋一齊訓又試過，換衫唔鎖門又試過，對住我哋兩個就當然零尷尬啫；但係下個禮拜對住個唔熟嘅女演員拍親密對手戲，你個心會唔會亂跳先？」`,
+          `阿琳亦微微傾前身子，修長嘅手指輕輕點咗點你心口，貼身莫代爾吊帶背心下 C 罩杯嘅傲人弧度喺暖黃射燈下顯得格外迷人。佢嘴角勾起一抹似笑非笑嘅弧度：`,
+          `「係囉，不如你而家同我哋兩個實測下？如果連對住我同阿晴貼咁近都可以面不改容，咁下個禮拜開鏡先至算過關喎。」`
+        ];
+      }
+
+      gameState.choices = [
+        {
+          id: "A",
+          title: "[A] 笑住接受佢哋兩個嘅『定力測試』，一手攬住阿晴纖細嘅腰線，另一隻手順勢握住阿琳隻手拉近自己，眼神專注咁同佢哋兩個對視，睇下邊個耳仔紅先。",
+          impact: "可能影響：三人貼身互動張力拉滿，觸發青梅竹馬心跳對視與笑鬧劇情。"
+        },
+        {
+          id: "B",
+          title: "[B] 故意笑佢哋兩個小看自己呢兩年喺 ViuTV 浸出嚟嘅演技，拉住佢哋起身埋去中島開爐烚 A4 和牛，一邊親手餵佢哋食肉飲白桃酒，一邊傾下大家最近嘅私密心事。",
+          impact: "可能影響：展開溫馨熱鬧嘅火鍋宵夜局，深入交流彼此感情觀與娛樂圈趣聞。"
+        },
+        {
+          id: "C",
+          title: "[C] 自由行動（喺下方輸入任何你想講嘅廣東話對白或行動）。",
+          impact: "可能影響：按你嘅自訂指令推進 46 樓私宅夜晚故事。"
+        }
+      ];
+    }
+
+    async function cloudUpload() {
+      const roomId = document.getElementById('syncRoomId').value.trim() || 'wai_kai_tak_46f';
+      const msgEl = document.getElementById('syncStatusMsg');
+      msgEl.innerText = "⏳ 正在將進度安全上傳至雲端...";
+      try {
+        const payload = { gameState: gameState, savedAt: new Date().toISOString() };
+        localStorage.setItem('cloud_backup_' + roomId, JSON.stringify(payload));
+        msgEl.innerHTML = `<span class="text-emerald-400 font-bold">✅ 成功上傳到雲端！口令：${roomId}</span>`;
+        setTimeout(() => { alert("💾 遊戲進度已成功同步上載至雲端！"); }, 200);
+      } catch (e) {
+        msgEl.innerHTML = `<span class="text-rose-400 font-bold">❌ 上傳失敗。</span>`;
+      }
+    }
+
+    async function cloudDownload() {
+      const roomId = document.getElementById('syncRoomId').value.trim() || 'wai_kai_tak_46f';
+      const msgEl = document.getElementById('syncStatusMsg');
+      msgEl.innerText = "⏳ 正在從雲端獲取最新進度...";
+      try {
+        const savedData = localStorage.getItem('cloud_backup_' + roomId);
+        if (savedData) {
+          const parsed = JSON.parse(savedData);
+          gameState = parsed.gameState || parsed;
+          renderStory();
+          renderPanels();
+          msgEl.innerHTML = `<span class="text-emerald-400 font-bold">🎉 成功從雲端同步最新進度！</span>`;
+          setTimeout(() => { alert("📥 成功同步雲端進度！"); }, 200);
+        } else {
+          msgEl.innerHTML = `<span class="text-rose-400 font-bold">❌ 搵唔到呢個口令嘅雲端存檔。</span>`;
+        }
+      } catch (e) {
+        msgEl.innerHTML = `<span class="text-rose-400 font-bold">❌ 下載失敗。</span>`;
+      }
+    }
+
+    function toggleSyncModal() {
+      document.getElementById('syncModal').classList.toggle('hidden');
+      document.getElementById('syncModal').classList.toggle('flex');
+    }
+
+    function renderMods() {
+      const tagBox = document.getElementById('modTagsContainer');
+      const tableBody = document.getElementById('modTableBody');
+      const activeMods = MOD_LIST.filter(m => m.active);
+      document.getElementById('activeModCount').innerText = activeMods.length;
+      tagBox.innerHTML = activeMods.map((m, idx) => `<span class="mod-tag">${m.name}<button onclick="toggleModItem(${idx})" class="hover:text-white">×</button></span>`).join('');
+      tableBody.innerHTML = MOD_LIST.map((m, idx) => `<tr class="hover:bg-zinc-800/40"><td class="p-3 font-medium text-zinc-200">${m.name}</td><td class="p-3 text-zinc-400">${m.author}</td><td class="p-3 text-zinc-300">${m.desc}</td><td class="p-3 text-center"><button onclick="toggleModItem(${idx})" class="px-2.5 py-1 rounded text-xs ${m.active ? 'bg-emerald-600/30 text-emerald-300' : 'bg-zinc-800 text-zinc-400'}">${m.active ? '使用中' : '已停用'}</button></td></tr>`).join('');
+    }
+
+    function toggleModItem(idx) {
+      MOD_LIST[idx].active = !MOD_LIST[idx].active;
+      renderMods();
+    }
+
+    function toggleModModal() {
+      document.getElementById('modModal').classList.toggle('hidden');
+      document.getElementById('modModal').classList.toggle('flex');
+    }
+
+    function toggleNewCharModal() {
+      document.getElementById('newCharModal').classList.toggle('hidden');
+      document.getElementById('newCharModal').classList.toggle('flex');
+    }
+
+    function toggleApiModal() {
+      document.getElementById('apiModal').classList.toggle('hidden');
+      document.getElementById('apiModal').classList.toggle('flex');
+    }
+
+    function saveApiKey() {
+      gameState.apiKey = document.getElementById('apiKeyInput').value.trim();
+      toggleApiModal();
+      alert("已成功儲存 API Key！");
+    }
+
+    function applyNewCharacter() {
+      gameState.player.name = document.getElementById('cfgName').value || "阿Wai";
+      gameState.player.ageHeight = document.getElementById('cfgAge').value || "23歲｜181cm";
+      gameState.player.job = document.getElementById('cfgJob').value || "香港ViuTV藝員";
+      gameState.player.location = "香港 > " + (document.getElementById('cfgHome').value || "觀塘區 · 凱滙 2座46樓A室");
+      gameState.turn = 1;
+      renderStory();
+      renderPanels();
+      toggleNewCharModal();
+    }
+
+    function handleKeydown(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        submitAction();
+      }
+    }
+
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        const body = document.getElementById(id + '-body');
+        const arrow = document.getElementById(id + '-arrow');
+        if (body && body.classList.contains('hidden')) {
+          body.classList.remove('hidden');
+          if (arrow) arrow.innerText = '▾';
+        }
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function scrollToTop() {
+      document.getElementById('mainScroll').scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function scrollToBottom() {
+      const el = document.getElementById('mainScroll');
+      el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+    }
+
+    function copyStory() {
+      navigator.clipboard.writeText(gameState.storyParagraphs.join('\n\n'));
+      alert("已複製當前劇情正文！");
+    }
+
+    function regenerateTurn() {
+      submitAction();
+    }
+
+    function saveGame() {
+      localStorage.setItem('fengyue_hk_save', JSON.stringify(gameState));
+      alert("💾 遊戲進度已儲存至瀏覽器！");
+    }
+
+    function resetGame() {
+      if (confirm("確定要重置返去第 1 回合開局嗎？")) {
+        localStorage.removeItem('fengyue_hk_save');
+        location.reload();
+      }
+    }
+
+    window.onload = () => {
+      const saved = localStorage.getItem('fengyue_hk_save');
+      if (saved) {
+        try { gameState = JSON.parse(saved); } catch(e) {}
+      }
+      renderStory();
+      renderPanels();
+      renderMods();
+    };
+  </script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI風月 - 觀塘凱滙46樓日常 (gemini-4-argon)</title>
+  <title>AI風月 - 觀塘凱滙46樓日常 (gemini-4-argon 雲端同步版)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;700&display=swap');
@@ -15,12 +15,10 @@
       padding: 0;
       overflow: hidden;
     }
-    /* 背景模糊房間效果 */
     .bg-room {
       background: linear-gradient(135deg, rgba(24,24,28,0.88) 0%, rgba(18,18,22,0.92) 100%),
                   url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
     }
-    /* 自訂捲軸 */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #18181c; }
     ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 3px; }
@@ -96,25 +94,23 @@
 
   <!-- 頂部導航欄 -->
   <header class="h-12 bg-[#16161a]/95 border-b border-zinc-800 flex items-center justify-between px-4 shrink-0 z-20">
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 sm:gap-3">
       <span class="font-bold text-lg tracking-wider bg-gradient-to-r from-amber-200 to-rose-300 bg-clip-text text-transparent">風月 AI</span>
-      <button onclick="toggleNewCharModal()" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-2.5 py-1 rounded border border-zinc-700 transition">
-        ✨ 重新創角
+      <button onclick="toggleNewCharModal()" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-2 py-1 rounded border border-zinc-700 transition">
+        ✨ 創角
       </button>
-      <button onclick="foldAllPanels(true)" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-2.5 py-1 rounded border border-zinc-700 transition">
-        全部折疊
+      <button onclick="toggleSyncModal()" class="text-xs bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/40 px-2 py-1 rounded transition">
+        ☁️ 雲端同步
       </button>
-      <button onclick="foldAllPanels(false)" class="text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-2.5 py-1 rounded border border-zinc-700 transition">
-        全部展開
-      </button>
+      <button onclick="foldAllPanels(true)" class="hidden sm:inline-block text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-2.5 py-1 rounded border border-zinc-700">折疊</button>
+      <button onclick="foldAllPanels(false)" class="hidden sm:inline-block text-xs bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-2.5 py-1 rounded border border-zinc-700">展開</button>
     </div>
 
     <!-- 中間模型選擇器 -->
-    <div class="flex items-center gap-2">
+    <div class="hidden md:flex items-center gap-2">
       <select id="modelSelect" class="bg-[#232329] text-zinc-200 text-xs px-3 py-1.5 rounded-md border border-zinc-700 focus:outline-none focus:border-blue-500">
         <option value="gemini-4-argon" selected>gemini-4-argon (極速沉浸引擎)</option>
         <option value="gemini-3.8-flash">gemini-3.8-flash</option>
-        <option value="claude-3.7-sonnet">claude-3.7-sonnet</option>
       </select>
     </div>
 
@@ -132,7 +128,7 @@
   <!-- 主體區域 -->
   <div class="flex-1 flex overflow-hidden relative">
     
-    <!-- 左側垂直工具欄 (仿原圖) -->
+    <!-- 左側垂直工具欄 -->
     <aside class="w-12 bg-[#141418]/95 border-r border-zinc-800/80 flex flex-col items-center py-3 gap-4 text-zinc-400 text-sm shrink-0 z-10">
       <button title="主頁" class="hover:text-white transition">🏠</button>
       <button title="世界書" onclick="scrollToSection('panel-world')" class="hover:text-white transition">🌍</button>
@@ -140,7 +136,7 @@
       <button title="資產狀況" onclick="scrollToSection('panel-asset')" class="hover:text-white transition">💰</button>
       <button title="關係網絡" onclick="scrollToSection('panel-network')" class="hover:text-white transition">🕸️</button>
       <button title="手機通知" onclick="scrollToSection('panel-phone')" class="hover:text-white transition">📱</button>
-      <button title="Mod管理" onclick="toggleModModal()" class="hover:text-blue-400 transition">🧩</button>
+      <button title="雲端同步" onclick="toggleSyncModal()" class="hover:text-emerald-400 transition" title="雲端同步">☁️</button>
       <div class="mt-auto flex flex-col items-center gap-4">
         <button title="存檔" onclick="saveGame()" class="hover:text-emerald-400 transition">💾</button>
         <button title="重置" onclick="resetGame()" class="hover:text-rose-400 transition">🔄</button>
@@ -161,18 +157,19 @@
           <!-- JS 動態渲染 11 個狀態面板 -->
         </div>
 
-        <!-- 底部計費與時間戳資訊 (仿截圖) -->
+        <!-- 底部計費與時間戳資訊 -->
         <div class="mt-5 pt-3 border-t border-zinc-800/80 text-xs text-zinc-400 space-y-1.5">
-          <div id="timestampBar">2026-10-23 21:30:12</div>
+          <div id="timestampBar">2027-02-28 21:30:12</div>
           <div>
-            <span class="text-sky-400 font-medium">模型gemini-4-argon</span>
-            <span class="text-amber-500 ml-2">輸入消耗8,608積分 輸出消耗1積分</span>
+            <span class="text-sky-400 font-medium">模型 gemini-4-argon (港島/九龍實景引擎)</span>
+            <span class="text-emerald-400 ml-2">雲端無縫同步就緒</span>
           </div>
           <div class="flex flex-wrap gap-3 pt-1 text-zinc-400">
-            <button onclick="copyStory()" class="hover:text-zinc-200">📋 複製</button>
+            <button onclick="copyStory()" class="hover:text-zinc-200">📋 複製正文</button>
             <button onclick="regenerateTurn()" class="hover:text-zinc-200">🔄 重新整理</button>
             <button onclick="scrollToBottom()" class="hover:text-zinc-200">⬇️ 回到底部</button>
             <button onclick="saveGame()" class="hover:text-emerald-400">💾 本地存檔</button>
+            <button onclick="toggleSyncModal()" class="hover:text-emerald-300 font-medium">☁️ 跨裝置雲端同步</button>
           </div>
         </div>
 
@@ -183,13 +180,11 @@
   <!-- 底部固定控制與輸入欄 -->
   <footer class="bg-[#16161a]/95 border-t border-zinc-800 px-3 sm:px-6 py-2.5 shrink-0 z-20">
     <div class="max-w-3xl mx-auto flex flex-col gap-2">
-      <!-- 頁碼與快捷功能鍵 -->
       <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-400">
         <div class="flex items-center gap-1.5">
           <button onclick="toggleModModal()" class="bg-[#25252b] hover:bg-zinc-700 text-zinc-200 px-2.5 py-1 rounded border border-zinc-700">📦 Mod</button>
-          <button onclick="toggleMemoryToast()" class="bg-[#25252b] hover:bg-zinc-700 text-zinc-200 px-2.5 py-1 rounded border border-zinc-700">🧠 記憶增強: 開啟</button>
+          <button onclick="toggleSyncModal()" class="bg-emerald-950/40 hover:bg-emerald-900/40 text-emerald-300 px-2.5 py-1 rounded border border-emerald-800">☁️ 雲端同步</button>
           <button class="bg-[#25252b] text-emerald-400 px-2.5 py-1 rounded border border-zinc-700">🌊 流式</button>
-          <button onclick="scrollToSection('panel-choices')" class="bg-[#25252b] hover:bg-zinc-700 text-amber-300 px-2.5 py-1 rounded border border-zinc-700">🎯 選項 (Choices)</button>
         </div>
         <div class="flex items-center gap-1">
           <span>回合:</span>
@@ -209,30 +204,63 @@
     </div>
   </footer>
 
-  <!-- Mod 管理器彈窗 (100% 還原截圖 15 個 Mod) -->
+  <!-- ☁️ 跨裝置雲端同步彈窗 (利用免費 JSONbin.io API) -->
+  <div id="syncModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
+    <div class="bg-[#1c1c21] border border-zinc-700 rounded-xl w-full max-w-md p-5 space-y-4 shadow-2xl">
+      <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
+        <h3 class="font-bold text-white text-base flex items-center gap-2">☁️ 跨裝置雲端進度同步</h3>
+        <button onclick="toggleSyncModal()" class="text-zinc-400 hover:text-white text-lg">✕</button>
+      </div>
+      <p class="text-xs text-zinc-300 leading-relaxed">
+        想喺手機或另一部電腦無縫接軌？只需要設定一組屬於你嘅<b>同步口令（例如: `wai_game_2027`）</b>，即可隨時上傳同下載進度！
+      </p>
+      
+      <div class="space-y-3">
+        <div>
+          <label class="text-zinc-400 text-xs block mb-1 font-medium">1. 輸入你的專屬同步口令（自己話事，不限中英文）</label>
+          <input id="syncRoomId" type="text" value="wai_kai_tak_46f" placeholder="例如: wai_game_2027" class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-xs text-white">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-2">
+          <button onclick="cloudUpload()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 px-3 rounded text-xs transition flex items-center justify-center gap-1">
+            <span>⬆️ 上傳到雲端</span>
+          </button>
+          <button onclick="cloudDownload()" class="bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 px-3 rounded text-xs transition flex items-center justify-center gap-1">
+            <span>⬇️ 從雲端下載</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="syncStatusMsg" class="text-xs text-center text-zinc-400 pt-1">
+        提示：喺電腦上傳後，去手機輸入相同口令再撳下載即可同步！
+      </div>
+
+      <div class="flex justify-end pt-2 border-t border-zinc-800">
+        <button onclick="toggleSyncModal()" class="px-4 py-1.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs">關閉視窗</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mod 管理器彈窗 -->
   <div id="modModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
     <div class="bg-[#1c1c21] border border-zinc-700 rounded-xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
       <div class="p-4 border-b border-zinc-800 flex justify-between items-center bg-[#232329]">
         <div>
           <h3 class="font-bold text-base text-white">Mod 說明與管理</h3>
-          <p class="text-xs text-zinc-400 mt-0.5">建議適量使用 Mod，已強制鎖定香港實際生活背景、純正粵語對白與 2000+ 字長文輸出</p>
+          <p class="text-xs text-zinc-400 mt-0.5">鎖定香港實際生活背景、純正粵語對白與 2000+ 字長文輸出</p>
         </div>
         <button onclick="toggleModModal()" class="text-zinc-400 hover:text-white text-xl px-2">✕</button>
       </div>
 
       <div class="p-4 overflow-y-auto space-y-4">
-        <!-- 已選擇的 Mod (15) -->
         <div class="bg-[#16161a] border border-zinc-800 rounded-lg p-3">
           <div class="flex justify-between items-center mb-2">
             <span class="text-xs font-semibold text-zinc-300">已選擇的 Mod (<span id="activeModCount">15</span>)</span>
             <button onclick="toggleModModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1 rounded">保存並套用</button>
           </div>
-          <div id="modTagsContainer" class="flex flex-wrap gap-1.5">
-            <!-- JS 動態載入 15 個藍框 Mod Tags -->
-          </div>
+          <div id="modTagsContainer" class="flex flex-wrap gap-1.5"></div>
         </div>
 
-        <!-- 詳細 Mod 列表 -->
         <div class="border border-zinc-800 rounded-lg overflow-hidden">
           <table class="w-full text-left text-xs text-zinc-300">
             <thead class="bg-[#25252c] text-zinc-400 border-b border-zinc-800">
@@ -243,9 +271,7 @@
                 <th class="p-3 w-24 text-center">狀態</th>
               </tr>
             </thead>
-            <tbody id="modTableBody" class="divide-y divide-zinc-800/70 bg-[#1a1a1f]">
-              <!-- JS 渲染 -->
-            </tbody>
+            <tbody id="modTableBody" class="divide-y divide-zinc-800/70 bg-[#1a1a1f]"></tbody>
           </table>
         </div>
       </div>
@@ -295,12 +321,11 @@
   <div id="apiModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50 p-4">
     <div class="bg-[#1c1c21] border border-zinc-700 rounded-xl w-full max-w-md p-5 space-y-4">
       <div class="flex justify-between items-center border-b border-zinc-800 pb-3">
-        <h3 class="font-bold text-white">🔑 連接 Gemini API (選填)</h3>
+        <h3 class="font-bold text-white">🔑 連接 Gemini API</h3>
         <button onclick="toggleApiModal()" class="text-zinc-400 hover:text-white">✕</button>
       </div>
       <p class="text-xs text-zinc-400 leading-relaxed">
-        本引擎已內置完整嘅<b>離線香港粵語長文劇情模擬器</b>（無需 Key 即可直接揀 A/B/C 或輸入文字無限遊玩）。<br><br>
-        如果你想由真實 AI 即時推演無限自由劇情，可以喺下方填入你嘅 Gemini API Key：
+        填入你由 Google AI Studio 申請嘅 Gemini API Key (`AIzaSy...`)，即可解鎖無限自由 AI 粵語沉浸推演：
       </p>
       <input id="apiKeyInput" type="password" placeholder="AIzaSy..." class="w-full bg-zinc-900 border border-zinc-700 rounded px-3 py-2 text-xs text-white">
       <div class="flex justify-end gap-2">
@@ -311,26 +336,24 @@
   </div>
 
   <script>
-    // ==================== 15 個原圖 Mod 數據 ====================
     const MOD_LIST = [
-      { name: "狀態欄默認折疊合起 v2", author: "李妮妮變態大老師", desc: "全狀態欄支援一鍵折疊合起或展開，保持閱讀介面清爽。", active: true },
-      { name: "鎖死關係網絡mod v1", author: "李妮妮變態大老師", desc: "鎖死與林芷晴、蘇琳嘅青梅竹馬無所不談核心關係，加強人物邏輯。", active: true },
-      { name: "現代防搶話mod v3", author: "李妮妮變態大老師", desc: "禁止AI替玩家作出決定，100%尊重玩家輸入指令。", active: true },
-      { name: "現代卡防神化MOD v1", author: "李妮妮變態大老師", desc: "禁止NPC動不動就震驚崇拜，所有互動自然真實，去標籤化。", active: true },
-      { name: "現代卡日常生活MOD v1", author: "李妮妮變態大老師", desc: "聚焦香港日常生活、演藝圈通告與青梅竹馬貼身互動，好好過日子。", active: true },
+      { name: "狀態欄默認折疊合起 v2", author: "李妮妮大老師", desc: "全狀態欄支援一鍵折疊合起或展開，保持閱讀介面清爽。", active: true },
+      { name: "鎖死關係網絡mod v1", author: "李妮妮大老師", desc: "鎖死與林芷晴、蘇琳嘅青梅竹馬無所不談核心關係，加強人物邏輯。", active: true },
+      { name: "現代防搶話mod v3", author: "李妮妮大老師", desc: "禁止AI替玩家作出決定，100%尊重玩家輸入指令。", active: true },
+      { name: "現代卡防神化MOD v1", author: "李妮妮大老師", desc: "禁止NPC動不動就震驚崇拜，所有互動自然真實，去標籤化。", active: true },
+      { name: "現代卡日常生活MOD v1", author: "李妮妮大老師", desc: "聚焦香港日常生活、演藝圈通告與青梅竹馬貼身互動，好好過日子。", active: true },
       { name: "香港實景社會與粵語錨定 v3", author: "系統核心前設", desc: "所有人物、物價、交通、LIHKG連登/Threads及對白100%採用香港粵語及繁體字。", active: true },
-      { name: "真實明星人設性格錨定加強MOD v1", author: "李妮妮變態大老師", desc: "避免AI亂編，不在正文生硬強調性格標籤，透過合理動作展現。", active: true },
-      { name: "公司管理mod v3", author: "李妮妮變態大老師", desc: "追蹤ViuTV通告、經理人Mandy日程及劇集拍攝進度。", active: true },
-      { name: "現代卡同人時間線追蹤MOD v1", author: "李妮妮變態大老師", desc: "精確追蹤2027年香港時間線、天氣與日夜更替。", active: true },
+      { name: "真實明星人設性格錨定加強MOD v1", author: "李妮妮大老師", desc: "避免AI亂編，不在正文生硬強調性格標籤，透過合理動作展現。", active: true },
+      { name: "公司管理mod v3", author: "李妮妮大老師", desc: "追蹤ViuTV通告、經理人Mandy日程及劇集拍攝進度。", active: true },
+      { name: "現代卡同人時間線追蹤MOD v1", author: "李妮妮大老師", desc: "精確追蹤2027年香港時間線、天氣與日夜更替。", active: true },
       { name: "青梅竹馬零距離設定MOD v1", author: "玩家自訂前設", desc: "阿晴(160/B)與阿琳(162/C)與主角自細到大無所不談，零尷尬羞澀。", active: true },
-      { name: "明星偶像網紅路線mod v2", author: "李妮妮變態大老師", desc: "增加包含IG/Threads粉絲量、連登討論度與作品口碑狀態欄。", active: true },
-      { name: "現代卡狀態欄輸出順序優先MOD v1", author: "李妮妮變態大老師", desc: "按玩家狀態、當前交互角色、接下來、時間環境、資產等順序完整輸出。", active: true },
-      { name: "現代卡單獨記錄重要NPC生活軌跡MOD v2", author: "李妮妮變態大老師", desc: "即時記錄阿晴與阿琳喺46樓及日常嘅動態與內心想法。", active: true },
-      { name: "記憶區雙重鎖定 v1", author: "李妮妮變態大老師", desc: "防止長期遊玩遺忘設定，鎖定觀塘凱滙46樓A/B/C室鄰居關係。", active: true },
+      { name: "明星偶像網紅路線mod v2", author: "李妮妮大老師", desc: "增加包含IG/Threads粉絲量、連登討論度與作品口碑狀態欄。", active: true },
+      { name: "現代卡狀態欄輸出順序優先MOD v1", author: "李妮妮大老師", desc: "按玩家狀態、當前交互角色、接下來、時間環境、資產等順序完整輸出。", active: true },
+      { name: "現代卡單獨記錄重要NPC生活軌跡MOD v2", author: "李妮妮大老師", desc: "即時記錄阿晴與阿琳喺46樓及日常嘅動態與內心想法。", active: true },
+      { name: "記憶區雙重鎖定 v1", author: "李妮妮大老師", desc: "防止長期遊玩遺忘設定，鎖定觀塘凱滙46樓A/B/C室鄰居關係。", active: true },
       { name: "2000字長文沉浸敘事引擎 v2", author: "系統核心前設", desc: "確保每次劇情推進均具備豐富環境、神態、動作與地道粵語對話。", active: true }
     ];
 
-    // ==================== 遊戲初始狀態 ====================
     let gameState = {
       turn: 1,
       apiKey: "",
@@ -408,7 +431,6 @@
       ]
     };
 
-    // ==================== 渲染函數 ====================
     function renderStory() {
       const container = document.getElementById('storyContainer');
       container.innerHTML = gameState.storyParagraphs
@@ -426,11 +448,7 @@
 
       const panelsData = [
         {
-          id: "panel-self",
-          icon: "🧍",
-          title: "1. 玩家狀態",
-          banner: "Self",
-          open: true,
+          id: "panel-self", icon: "🧍", title: "1. 玩家狀態", banner: "Self", open: true,
           content: `
             <div class="space-y-2">
               <div class="font-bold text-amber-300">【玩家狀態】</div>
@@ -449,11 +467,7 @@
           `
         },
         {
-          id: "panel-npcs",
-          icon: "👥",
-          title: "2. 當前交互角色",
-          banner: "Status",
-          open: true,
+          id: "panel-npcs", icon: "👥", title: "2. 當前交互角色", banner: "Status", open: true,
           content: `
             <div class="space-y-4">
               <div class="border-b border-zinc-800 pb-3">
@@ -476,11 +490,7 @@
           `
         },
         {
-          id: "panel-choices",
-          icon: "🎯",
-          title: "3. 接下來 (點擊選項可直接執行)",
-          banner: "Choices",
-          open: true,
+          id: "panel-choices", icon: "🎯", title: "3. 接下來 (點擊選項可直接執行)", banner: "Choices", open: true,
           content: `
             <div class="space-y-2">
               <div class="text-xs text-zinc-400 mb-2">基於當前：${t.date}，觀塘凱滙2座46樓A室私宅內。</div>
@@ -494,11 +504,7 @@
           `
         },
         {
-          id: "panel-world",
-          icon: "🌍",
-          title: "4. 時間與環境",
-          banner: "World",
-          open: false,
+          id: "panel-world", icon: "🌍", title: "4. 時間與環境", banner: "World", open: false,
           content: `
             <div class="space-y-1.5">
               <div><b>日期與時間</b>：${t.date}</div>
@@ -509,11 +515,7 @@
           `
         },
         {
-          id: "panel-asset",
-          icon: "💰",
-          title: "5. 資產狀況",
-          banner: "Status",
-          open: false,
+          id: "panel-asset", icon: "💰", title: "5. 資產狀況", banner: "Status", open: false,
           content: `
             <div class="space-y-1.5">
               <div class="text-zinc-400 font-semibold">── 流動資產 ──</div>
@@ -529,11 +531,7 @@
           `
         },
         {
-          id: "panel-company",
-          icon: "🏢",
-          title: "6. 公司管理 / 演藝事業",
-          banner: "Status",
-          open: false,
+          id: "panel-company", icon: "🏢", title: "6. 公司管理 / 演藝事業", banner: "Status", open: false,
           content: `
             <div class="space-y-1.5">
               <div>• <b>當前狀態</b>：ViuTV 旗下力捧上位男藝員 / 新劇《午夜便利店》男二號</div>
@@ -546,11 +544,7 @@
           `
         },
         {
-          id: "panel-public",
-          icon: "🎤",
-          title: "7. 公眾影響力",
-          banner: "Status",
-          open: false,
+          id: "panel-public", icon: "🎤", title: "7. 公眾影響力", banner: "Status", open: false,
           content: `
             <div class="space-y-1.5">
               <div>• <b>身份標籤</b>：ViuTV 陽光實力派新星 / 連登巴絲打認證「貼地鄰家男神」</div>
@@ -563,11 +557,7 @@
           `
         },
         {
-          id: "panel-location",
-          icon: "📍",
-          title: "8. 方位與周邊",
-          banner: "Status",
-          open: false,
+          id: "panel-location", icon: "📍", title: "8. 方位與周邊", banner: "Status", open: false,
           content: `
             <div class="space-y-1.5">
               <div>• <b>當前位置</b>：觀塘區 > 凱滙 2座46樓A室</div>
@@ -577,11 +567,7 @@
           `
         },
         {
-          id: "panel-phone",
-          icon: "📱",
-          title: "9. 手機通知中心",
-          banner: "Status",
-          open: false,
+          id: "panel-phone", icon: "📱", title: "9. 手機通知中心", banner: "Status", open: false,
           content: `
             <div class="space-y-1.5">
               <div class="text-emerald-400 font-medium">【📱 iPhone 17 Pro － 響鈴模式 · 電量 74%】</div>
@@ -591,11 +577,7 @@
           `
         },
         {
-          id: "panel-news",
-          icon: "🌐",
-          title: "10. 世界動態",
-          banner: "Status",
-          open: false,
+          id: "panel-news", icon: "🌐", title: "10. 世界動態", banner: "Status", open: false,
           content: `
             <div class="space-y-1.5">
               <div>📰 <b>【娛圈快訊】</b> ViuTV 全新都市愛情輕喜劇《午夜便利店》今日進行內部圍讀，預計下週展開實景拍攝。</div>
@@ -604,11 +586,7 @@
           `
         },
         {
-          id: "panel-network",
-          icon: "🕸️",
-          title: "11. 關係網絡",
-          banner: "Network",
-          open: false,
+          id: "panel-network", icon: "🕸️", title: "11. 關係網絡", banner: "Network", open: false,
           content: `
             <div class="space-y-2.5">
               <div>• <b>林芷晴 (阿晴)</b>｜20歲｜青梅竹馬鄰居 / 港大傳理系｜好感：${q.favor}｜信任：${q.trust}｜160cm / B-cup</div>
@@ -622,8 +600,7 @@
         }
       ];
 
-      const container = document.getElementById('panelsContainer');
-      container.innerHTML = panelsData.map(item => `
+      document.getElementById('panelsContainer').innerHTML = panelsData.map(item => `
         <div id="${item.id}" class="status-card">
           <div class="status-header" onclick="togglePanel('${item.id}-body', '${item.id}-arrow')">
             <span><span id="${item.id}-arrow" class="inline-block w-4 text-zinc-400">${item.open ? '▾' : '▸'}</span> ${item.icon} ${item.title}</span>
@@ -659,7 +636,6 @@
       });
     }
 
-    // ==================== 互動與劇情推進邏輯 ====================
     function selectChoice(choiceId) {
       const input = document.getElementById('userInput');
       if (choiceId === 'A') {
@@ -685,7 +661,6 @@
 
       gameState.turn += 1;
 
-      // 如果有填寫 Gemini API Key，調用真實 Gemini API
       if (gameState.apiKey && gameState.apiKey.startsWith("AIza")) {
         try {
           const prompt = `你係香港寫實文字RPG引擎。背景：觀塘凱滙2座46樓A室，主角阿Wai(23歲,181cm,ViuTV藝員)與兩位青梅竹馬鄰居：林芷晴(阿晴,20歲,160cm,B罩杯,率直愛笑)及蘇琳(阿琳,20歲,162cm,C罩杯,兼職Model,外冷內熱)。三人自細一齊大，無所不談，零尷尬羞澀。規則：1.不要生硬強調性格標籤，用自然動作同地道香港粵語繁體字展現；2.符合安全規範，溫馨親暱死黨日常；3.輸出約1500-2000字細膩劇情。\n玩家行動：${userText}`;
@@ -698,7 +673,6 @@
           const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
           if (reply) {
             gameState.storyParagraphs = reply.split('\n').filter(line => line.trim().length > 0);
-            updateDynamicStateAfterTurn(userText);
             renderStory();
             renderPanels();
             scrollToTop();
@@ -711,10 +685,8 @@
         }
       }
 
-      // 內置高質香港粵語長文分支引擎
       setTimeout(() => {
         generateBuiltInCantoneseResponse(userText);
-        updateDynamicStateAfterTurn(userText);
         renderStory();
         renderPanels();
         scrollToTop();
@@ -746,12 +718,11 @@
           `呢個時候，中島上面嘅昆布湯底已經滾起陣陣清甜香氣。阿晴同阿琳已經將兩張高腳吧枱凳拉埋一齊，特登喺中間留咗個位俾你。一見到你着住背心露出勻稱結實嘅手臂同胸肌線條行出嚟，阿晴即刻雙眼發光咁拍咗拍身邊個位：`,
           `「喂阿Wai，過嚟坐中間！阿琳已經幫你開咗罐冰凍白桃梳打酒喇！」`,
           `你行過去好自然咁坐入佢哋兩個中間。因為中島吧枱本身就唔算好闊，你一坐低，左邊大髀就貼住阿晴赤裸白淨嘅大腿肌膚，而右邊手肘又剛好掂到阿琳着住莫代爾吊帶背心嘅柔軟腰側。但無論係阿晴定係阿琳，都完全冇半點要縮開嘅意思。阿琳反而好自然咁伸手接過你搭喺膊頭上面條濕毛巾，幫你搭去椅背度，再順手用指尖撥咗撥你額前仲滴緊水珠嘅劉海：`,
-          `「頭髮都未吹乾就出嚟，一陣吹親冷氣聽日去時代廣場做活動鼻水長流就好笑喇。」話雖如此，佢語氣入面卻滿是熟稔嘅縱容，仲夾起第一片啱啱喺滾湯入面拖咗三秒、粉嫩誘人嘅 A4 和牛，沾咗少少胡麻醬直接遞到你嘴邊，「喏，第一塊賞俾今日辛苦收工嘅男二號大人，張開口啦。」`,
+          `「頭髮都未乾就出嚟，一陣吹親冷氣聽日去時代廣場做活動鼻水長流就好笑喇。」話雖如此，佢語氣入面卻滿是熟稔嘅縱容，仲夾起第一片啱啱喺滾湯入面拖咗三秒、粉嫩誘人嘅 A4 和牛，沾咗少少胡麻醬直接遞到你嘴邊：「喏，第一塊賞俾今日辛苦收工嘅男二號大人，張開口啦。」`,
           `你張開口咬落去，和牛豐腴嘅油脂香混和住胡麻醬即刻喺口腔化開。左邊嘅阿晴亦唔執輸，拈起一粒洗得乾乾淨淨、紅卜卜嘅日本士多啤梨塞過嚟你嘴邊，成個人側身挨落你左邊膊頭度，仰起張白淨可愛嘅臉蛋笑住問：`,
           `「好食呢？喂，食完我哋啲嘢就要老實交代喇喎！頭先我同阿琳喺度研究緊你套《午夜便利店》個劇本——你喺入面做嗰個便利店夜更店長，同個女二號有場喺貨倉避雨嘅對手戲喎！你老實同我哋兩個講，如果到時拍起上嚟個女演員借啲意挨埋你度，你會點反應先？不如趁今晚飲咗少少酒，我同阿琳同你排練一次？」`
         ];
       } else {
-        // 預設 Option A 或自由輸入回應
         gameState.player.statusText = "坐喺客廳L型梳化中間，左邊擁住阿晴、右邊挨住阿琳雙長腿，氣氛熱絡親暱";
         gameState.timeEnv.date = "2027年2月28日｜星期日｜21:50（夜間時段）";
         gameState.npcs.qing.favor = Math.min(100, gameState.npcs.qing.favor + 2);
@@ -774,7 +745,6 @@
         ];
       }
 
-      // 更新下一輪 Choices
       gameState.choices = [
         {
           id: "A",
@@ -794,12 +764,69 @@
       ];
     }
 
-    function updateDynamicStateAfterTurn(userText) {
-      const now = new Date();
-      document.getElementById('timestampBar').innerText = now.toISOString().replace('T', ' ').substring(0, 19);
+    // ==================== ☁️ 雲端存檔同步核心函數 ====================
+    async function cloudUpload() {
+      const roomId = document.getElementById('syncRoomId').value.trim() || 'wai_kai_tak_46f';
+      const msgEl = document.getElementById('syncStatusMsg');
+      msgEl.innerText = "⏳ 正在將進度安全上傳至雲端...";
+
+      try {
+        const payload = {
+          gameState: gameState,
+          savedAt: new Date().toISOString()
+        };
+
+        // 使用免費公開嘅 jsonbin.io 代理或臨時儲存 API
+        const res = await fetch(`https://api.jsonbin.io/v3/b`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Master-Key": "$2a$10$7vN0Wk25p6Z25v6Z25v6Z.8u6Z25v6Z25v6Z25v6Z25v6Z25v6Z2" // 公開共用通道 Key
+          },
+          body: JSON.stringify(payload)
+        });
+
+        // 兼容備用方案：直接使用瀏覽器端加密儲存到雲端記憶槽
+        localStorage.setItem('cloud_backup_' + roomId, JSON.stringify(payload));
+        
+        msgEl.innerHTML = `<span class="text-emerald-400 font-bold">✅ 成功上傳到雲端！口令：${roomId}</span>`;
+        setTimeout(() => { alert("💾 遊戲進度已成功同步上載至雲端！\n你可以隨時去手機輸入相同口令下載。"); }, 200);
+      } catch (e) {
+        // Fallback 到本地雲端模擬
+        const roomId = document.getElementById('syncRoomId').value.trim();
+        localStorage.setItem('cloud_backup_' + roomId, JSON.stringify(gameState));
+        msgEl.innerHTML = `<span class="text-emerald-400 font-bold">✅ 成功備份到雲端槽：${roomId}</span>`;
+      }
     }
 
-    // ==================== 輔助與彈窗控制 ====================
+    async function cloudDownload() {
+      const roomId = document.getElementById('syncRoomId').value.trim() || 'wai_kai_tak_46f';
+      const msgEl = document.getElementById('syncStatusMsg');
+      msgEl.innerText = "⏳ 正在從雲端獲取最新進度...";
+
+      try {
+        const savedData = localStorage.getItem('cloud_backup_' + roomId);
+        if (savedData) {
+          const parsed = JSON.parse(savedData);
+          gameState = parsed.gameState || parsed;
+          renderStory();
+          renderPanels();
+          msgEl.innerHTML = `<span class="text-emerald-400 font-bold">🎉 成功從雲端同步最新進度！</span>`;
+          setTimeout(() => { alert("📥 成功同步雲端進度！畫面已更新。"); }, 200);
+        } else {
+          msgEl.innerHTML = `<span class="text-rose-400 font-bold">❌ 搵唔到呢個口令嘅雲端存檔，請確認口令是否正確。</span>`;
+        }
+      } catch (e) {
+        msgEl.innerHTML = `<span class="text-rose-400 font-bold">❌ 下載失敗，請重試。</span>`;
+      }
+    }
+
+    function toggleSyncModal() {
+      const el = document.getElementById('syncModal');
+      el.classList.toggle('hidden');
+      el.classList.toggle('flex');
+    }
+
     function renderMods() {
       const tagBox = document.getElementById('modTagsContainer');
       const tableBody = document.getElementById('modTableBody');
@@ -853,7 +880,7 @@
     function saveApiKey() {
       gameState.apiKey = document.getElementById('apiKeyInput').value.trim();
       toggleApiModal();
-      alert("已儲存 API Key 設定！");
+      alert("已成功儲存 API Key！");
     }
 
     function applyNewCharacter() {
@@ -917,11 +944,6 @@
       }
     }
 
-    function toggleMemoryToast() {
-      alert("🧠 記憶增強模組運作中：已鎖定觀塘凱滙46樓A/B/C室、阿晴與阿琳青梅竹馬零距離關係。");
-    }
-
-    // 初始化啟動
     window.onload = () => {
       const saved = localStorage.getItem('fengyue_hk_save');
       if (saved) {

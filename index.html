@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI風月 - 觀塘凱滙46樓日常 (gemini-1.5-pro 終極穩定版)</title>
+  <title>AI風月 - 觀塘凱滙46樓日常 (v1穩定端點版)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@300;400;500;700&display=swap');
@@ -109,7 +109,7 @@
     <!-- 中間模型選擇器 -->
     <div class="hidden md:flex items-center gap-2">
       <select id="modelSelect" class="bg-[#232329] text-zinc-200 text-xs px-3 py-1.5 rounded-md border border-zinc-700 focus:outline-none focus:border-blue-500">
-        <option value="gemini-1.5-pro" selected>gemini-1.5-pro (官方高穩定引擎)</option>
+        <option value="gemini-1.5-pro" selected>gemini-1.5-pro (官方 v1 穩定引擎)</option>
       </select>
     </div>
 
@@ -160,7 +160,7 @@
         <div class="mt-5 pt-3 border-t border-zinc-800/80 text-xs text-zinc-400 space-y-1.5">
           <div id="timestampBar">2027-02-28 21:30:12</div>
           <div>
-            <span class="text-sky-400 font-medium">模型 gemini-1.5-pro (港島/九龍實景引擎)</span>
+            <span class="text-sky-400 font-medium">模型 gemini-1.5-pro (官方 v1 穩定實景引擎)</span>
             <span class="text-emerald-400 ml-2">雲端無縫同步就緒</span>
           </div>
           <div class="flex flex-wrap gap-3 pt-1 text-zinc-400">
@@ -182,7 +182,7 @@
       <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-400">
         <div class="flex items-center gap-1.5">
           <button onclick="toggleModModal()" class="bg-[#25252b] hover:bg-zinc-700 text-zinc-200 px-2.5 py-1 rounded border border-zinc-700">📦 Mod</button>
-          <button onclick="toggleSyncModal()" class="bg-emerald-950/40 hover:bg-emerald-900/40 text-emerald-300 px-2.5 py-1 rounded border border-emerald-800">☁️ 雲端同步</button>
+          <button onclick="toggleSyncModal()" class="bg-emerald-950/40 hover:bg-emerald-900/40 text-emerald-300 px-2.5 py-1 rounded border border-zinc-800">☁️ 雲端同步</button>
           <button class="bg-[#25252b] text-emerald-400 px-2.5 py-1 rounded border border-zinc-700">🌊 流式</button>
         </div>
         <div class="flex items-center gap-1">
@@ -664,8 +664,8 @@
         try {
           const prompt = `你係香港寫實文字RPG引擎。背景：觀塘凱滙2座46樓A室，主角阿Wai(23歲,181cm,ViuTV藝員)與兩位青梅竹馬鄰居：林芷晴(阿晴,20歲,160cm,B罩杯,率直愛笑)及蘇琳(阿琳,20歲,162cm,C罩杯,兼職Model,外冷內熱)。三人自細一齊大，無所不談，零尷尬羞澀。規則：1.不要生硬強調性格標籤，用自然動作同地道香港粵語繁體字展現；2.符合安全規範，溫馨親暱死黨日常；3.輸出約1500-2000字細膩劇情。\n玩家行動：${userText}`;
           
-          // 使用穩定可靠的 gemini-1.5-pro 模型與通用 API 端點
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${gameState.apiKey}`, {
+          // 使用 v1 穩定端點
+          const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-pro:generateContent?key=${gameState.apiKey}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
@@ -754,7 +754,7 @@
         },
         {
           id: "B",
-          title: "[B] 故意笑佢哋兩個小看自己呢兩年喺 ViuTV 浸出嚟嘅演技，拉住佢哋起身埋去中島開爐烚 A4 和牛，一邊親手餵佢哋食肉飲白桃酒，一邊傾下大家最近嘅私密心事。",
+          title: "[B] 故意笑佢哋兩個小看自己呢兩年喺 ViusTV 浸出嚟嘅演技，拉住佢哋起身埋去中島開爐烚 A4 和牛，一邊親手餵佢哋食肉飲白桃酒，一邊傾下大家最近嘅私密心事。",
           impact: "可能影響：展開溫馨熱鬧嘅火鍋宵夜局，深入交流彼此感情觀與娛樂圈趣聞。"
         },
         {
